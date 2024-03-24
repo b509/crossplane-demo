@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: keycloak-idp-client-secret
+  namespace: crossplane-system
+type: Opaque
+stringData:
+  clientsecret: "abc"
+---
+apiVersion: oidc.keycloak.crossplane.io/v1alpha1
+kind: IdentityProvider
+metadata:
+  name: kc-oidc-idp
+spec:
+  forProvider:
+    realmRef: 
+      name: "kc-testrealm"
+    displayName: "My OIDC IDP"
+    alias: "myoidcidp"
+    authorizationUrl: "https://lala"
+    tokenUrl: "https://lala"
+    clientId: "abc"
+    clientSecretSecretRef: 
+      namespace: crossplane-system
+      name: keycloak-idp-client-secret
+      key: clientsecret
+  providerConfigRef:
+    name: local-keycloak-instance-config

@@ -1,0 +1,12 @@
+apiVersion: core.springclouddataflow.crossplane.io/v1alpha1
+kind: Stream
+metadata:
+  name: stream-1
+spec:
+  forProvider:
+    name: "Stream01"
+    description: "Test Stream"
+    definition: "App002 | App003"
+    deploy: false
+  providerConfigRef:
+    name: local-springclouddataflow-instance-config

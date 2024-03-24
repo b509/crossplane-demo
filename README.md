@@ -230,3 +230,81 @@ kubectl apply -f ./k8s/crossplane/dataflow
 ## Check
 
 Dataflow URL: http://dataflow.k8s.localhost/dashboard
+
+
+# Testing with Keycloak
+
+## Install Keycloak via Helm
+```
+helm repo add codecentric https://codecentric.github.io/helm-charts
+
+cat << EOF > values.yaml
+command:
+  - "/opt/keycloak/bin/kc.sh"
+  - "start"
+  - "--http-enabled=true"
+  - "--http-port=8080"
+  - "--hostname-strict=false"
+  - "--hostname-strict-https=false"
+extraEnv: |
+  - name: KEYCLOAK_ADMIN
+    value: admin
+  - name: KEYCLOAK_ADMIN_PASSWORD
+    value: admin
+  - name: JAVA_OPTS_APPEND
+    value: >-
+      -Djgroups.dns.query={{ include "keycloak.fullname" . }}-headless
+ingress:
+  enabled: true
+  rules:
+    - host: keycloak.k8s.localhost
+      paths:
+      - path: "/"
+        pathType: "Prefix"
+  tls:
+    - hosts:
+        - keycloak.k8s.localhost
+EOF
+
+helm install keycloak codecentric/keycloakx --values ./values.yaml
+```
+
+## Build Crossplane SpringCloudDataFlow Provider
+```
+git clone https://github.com/denniskniep/provider-keycloak
+make build
+```
+
+copy output from `/provider-keycloak/_output/xpkg/linux_amd64/*.xpkg` to `/crossplane-demo/registry/files/keycloak`
+```
+rm -r registry/files/keycloak; \
+mkdir registry/files/keycloak; \
+cp ../provider-keycloak/_output/version registry/files/keycloak/; \
+cat ../provider-keycloak/_output/version | xargs -i cp ../provider-keycloak/_output/xpkg/linux_amd64/provider-keycloak-{}.xpkg registry/files/keycloak/
+```
+
+## Push *.xpkg file 
+Build container with crossplane cli
+```
+sudo docker build -t "crossplane-cli:latest" -f ./registry/Dockerfile.crossplane-cli ./registry
+```
+
+Start container with crossplane cli + trusted self signed cert
+and push files to OCI registry (The file was built with `make build` in source repo)
+```
+sudo docker run --rm -it --net=host -v $(pwd)/registry/files:/files crossplane-cli:latest bash -c 'cd /files/keycloak; ls *.xpkg | xargs -i crossplane xpkg push -f /files/keycloak/{} registry.k3d.localhost:5000/provider-keycloak:{}'
+```
+
+Update keycloak-provider k8s manifest
+```
+export PROVIDER_VERSION=provider-keycloak-$(cat registry/files/keycloak/version).xpkg; envsubst < k8s/crossplane/keycloak/01-keycloak-provider.template > k8s/crossplane/keycloak/01-keycloak-provider.yaml
+```
+
+## Install Crossplane DataFlow Provider
+```
+kubectl apply -f ./k8s/crossplane/keycloak
+```
+
+## Check
+
+keycloak URL: http://keycloak.k8s.localhost/auth
