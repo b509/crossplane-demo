@@ -230,3 +230,23 @@ kubectl apply -f ./k8s/crossplane/dataflow
 ## Check
 
 Dataflow URL: http://dataflow.k8s.localhost/dashboard
+
+
+
+
+# Testing with Keycloak
+
+
+Follow steps from [Testing with Temporal](#testing-with-temporal), but replace the helm installation with the below one and replace `temporal` with `keycloak` whereever you encounter it 
+
+## Install Keycloak via Helm
+https://github.com/codecentric/helm-charts/tree/master/charts/keycloakx
+
+```
+helm repo add codecentric https://codecentric.github.io/helm-charts
+helm repo update
+helm install my-keycloak codecentric/keycloakx --set "ingress.enabled=true,ingress.hosts[0]=keycloak.k8s.localhost" --values=./k8s/helm/keycloak/values.yaml
+```
+
+## Check
+Keycloak URL: http://keycloak.k8s.localhost/
