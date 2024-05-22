@@ -10,7 +10,7 @@ spec:
   forProvider:
     alias: test-exec-two-config
     realmIdRef:
-      name: test-realm
+      name: "kc-testrealm"
     executionIdRef:
       name: test-execution-two
     config: 
@@ -34,7 +34,7 @@ spec:
     parentFlowAliasRef:
       name: test-flow
     realmIdRef:
-      name: test-realm
+      name: "kc-testrealm"
     requirement: ALTERNATIVE
   providerConfigRef:
     name: local-keycloak-instance-config
@@ -53,7 +53,7 @@ spec:
     parentFlowAliasRef:
       name: test-flow
     realmIdRef:
-      name: test-realm
+      name: "kc-testrealm"
     requirement: ALTERNATIVE
   providerConfigRef:
     name: local-keycloak-instance-config
@@ -70,7 +70,7 @@ spec:
     browserFlowRef: 
       name: test-flow
     realmIdRef:
-      name: test-realm
+      name: "kc-testrealm"
   providerConfigRef:
     name: local-keycloak-instance-config
 
@@ -85,7 +85,7 @@ spec:
   forProvider:
     providerId: basic-flow
     realmIdRef:
-      name: test-realm
+      name: "kc-testrealm"
     alias: test-subflow-alias
     parentFlowAliasRef:
       name: test-flow
@@ -104,6 +104,6 @@ spec:
     alias: test-flow
     providerId: basic-flow
     realmIdRef:
-      name: test-realm
+      name: "kc-testrealm"
   providerConfigRef:
     name: local-keycloak-instance-config

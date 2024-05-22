@@ -22,7 +22,7 @@ spec:
     usersDn: ou=users,dc=example,dc=org
     uuidLdapAttribute: objectGUID
     realmIdRef:
-      name: test-realm
+      name: "kc-testrealm"
   providerConfigRef:
     name: local-keycloak-instance-config
 
@@ -36,7 +36,7 @@ metadata:
 spec:
   forProvider:
     realmIdRef:
-      name: test-realm
+      name: "kc-testrealm"
     ldapUserFederationIdRef:
       name: test-userfederation
     name: MyCustomUserAttributeMapper

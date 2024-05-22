@@ -269,7 +269,7 @@ EOF
 helm install keycloak codecentric/keycloakx --values ./values.yaml
 ```
 
-## Build Crossplane SpringCloudDataFlow Provider
+## Build Keycloak Provider
 ```
 git clone https://github.com/denniskniep/provider-keycloak
 make build
@@ -300,7 +300,7 @@ Update keycloak-provider k8s manifest
 export PROVIDER_VERSION=provider-keycloak-$(cat registry/files/keycloak/version).xpkg; envsubst < k8s/crossplane/keycloak/01-keycloak-provider.template > k8s/crossplane/keycloak/01-keycloak-provider.yaml
 ```
 
-## Install Crossplane DataFlow Provider
+## Install Keycloak Provider
 ```
 kubectl apply -f ./k8s/crossplane/keycloak
 ```
