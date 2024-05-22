@@ -4,7 +4,8 @@ metadata:
   name: kc-oidc-idp-username-mapper
 spec:
   forProvider:
-    realm: "test"
+    realmRef: 
+      name: "kc-testrealm"
     name: "usernamemapper"
     identityProviderAlias: "myoidcidp"
     identityProviderMapper: "oidc-username-idp-mapper"
