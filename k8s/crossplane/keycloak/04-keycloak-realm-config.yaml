@@ -1,0 +1,14 @@
+apiVersion: realm.keycloak.crossplane.io/v1alpha1
+kind: Realm
+metadata:
+  name: test-realm
+  namespace: crossplane-system
+  labels:
+    testing.merckgroup.com/realm-name: test-realm
+spec:
+  forProvider:
+    displayName: Test Realm
+    enabled: true
+    realm: test-realm
+  providerConfigRef:
+    name: local-keycloak-instance-config

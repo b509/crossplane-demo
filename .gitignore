@@ -1,3 +1,4 @@
 registry/files/
 k8s/crossplane/temporal/01-temporal-provider.yaml
 k8s/crossplane/dataflow/01-dataflow-provider.yaml
+values.yaml

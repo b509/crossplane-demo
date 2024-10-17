@@ -18,7 +18,9 @@ kind: Provider
 metadata:
   name: provider-keycloak
 spec:
-  package: registry.k3d.localhost:5000/provider-keycloak:provider-keycloak-v0.2.0-dirty.xpkg
+  # if you want to use the official provider-keycloak version, use this instead
+  #package: xpkg.upbound.io/crossplane-contrib/provider-keycloak:v1.6.0
+  package: registry.k3d.localhost:5000/provider-keycloak:provider-keycloak-v5-pre.1.0.1.xpkg
   packagePullPolicy: IfNotPresent
   revisionActivationPolicy: Automatic
   runtimeConfigRef:

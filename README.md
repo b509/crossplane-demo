@@ -101,6 +101,7 @@ helm install komoplane komodorio/komoplane \
 Crossplane UI URL: http://komoplane.k8s.localhost/
 
 # Testing with Grafana
+<details>
 ## Install Grafana via Helm
 https://github.com/grafana/helm-charts/blob/main/charts/grafana/README.md
 
@@ -124,9 +125,13 @@ kubectl apply -f ./k8s/crossplane/grafana
 ## Check
 
 Grafana URL: http://grafana.k8s.localhost/
+</details>
+<br>
 
 
 # Testing with Temporal
+<details>
+
 ## Install Temporal via Helm
 ```
 git clone https://github.com/temporalio/helm-charts
@@ -181,9 +186,11 @@ Query namespaces with CLI
 ```
 temporal operator namespace list --address temporal.k8s.localhost:7233
 ```
-
+</details>
+<br>
 
 # Testing with SpringCloudDataFlow
+<details>
 
 ## Install SpringCloudDataFlow via Helm
 ```
@@ -231,8 +238,12 @@ kubectl apply -f ./k8s/crossplane/dataflow
 
 Dataflow URL: http://dataflow.k8s.localhost/dashboard
 
+</details>
+<br>
+
 
 # Testing with Keycloak
+<details>
 
 ## Install Keycloak via Helm
 ```
@@ -245,7 +256,6 @@ command:
   - "--http-enabled=true"
   - "--http-port=8080"
   - "--hostname-strict=false"
-  - "--hostname-strict-https=false"
 extraEnv: |
   - name: KEYCLOAK_ADMIN
     value: admin
@@ -254,6 +264,8 @@ extraEnv: |
   - name: JAVA_OPTS_APPEND
     value: >-
       -Djgroups.dns.query={{ include "keycloak.fullname" . }}-headless
+http:
+  relativePath: "/"
 ingress:
   enabled: true
   rules:
@@ -307,4 +319,6 @@ kubectl apply -f ./k8s/crossplane/keycloak
 
 ## Check
 
-keycloak URL: http://keycloak.k8s.localhost/auth
+Keycloak URL: http://keycloak.k8s.localhost/auth
+</details>
+<br>
