@@ -1,0 +1,109 @@
+# ## for now: executions that should happen sooner in a flow must be below executions that happen later in a flow
+# # TODO: resolve the depends_on limitation (reference: https://registry.terraform.io/providers/mrparkers/keycloak/latest/docs/resources/authentication_execution)
+
+apiVersion: authenticationflow.keycloak.crossplane.io/v1alpha1
+kind: ExecutionConfig
+metadata:
+  name: test-execution-config-execution-two
+  namespace: crossplane-system
+spec:
+  forProvider:
+    alias: test-exec-two-config
+    realmIdRef:
+      name: test-realm
+    executionIdRef:
+      name: test-execution-two
+    config: 
+      key1: value1
+      key2: value2
+      defaultProvider: adfs-address
+  providerConfigRef:
+    name: local-keycloak-instance-config
+
+---
+
+apiVersion: authenticationflow.keycloak.crossplane.io/v1alpha1
+kind: Execution
+metadata:
+  name: test-execution-one
+  namespace: crossplane-system
+spec:
+  forProvider:
+    authenticator: auth-cookie
+    #priority: 20
+    parentFlowAliasRef:
+      name: test-flow
+    realmIdRef:
+      name: test-realm
+    requirement: ALTERNATIVE
+  providerConfigRef:
+    name: local-keycloak-instance-config
+
+--- 
+
+apiVersion: authenticationflow.keycloak.crossplane.io/v1alpha1
+kind: Execution
+metadata:
+  name: test-execution-two
+  namespace: crossplane-system
+spec:
+  forProvider:
+    authenticator: identity-provider-redirector
+    #priority: 10
+    parentFlowAliasRef:
+      name: test-flow
+    realmIdRef:
+      name: test-realm
+    requirement: ALTERNATIVE
+  providerConfigRef:
+    name: local-keycloak-instance-config
+
+--- 
+
+apiVersion: authenticationflow.keycloak.crossplane.io/v1alpha1
+kind: Bindings
+metadata:
+  name: test-browser-authentication-binding
+  namespace: crossplane-system
+spec:
+  forProvider:
+    browserFlowRef: 
+      name: test-flow
+    realmIdRef:
+      name: test-realm
+  providerConfigRef:
+    name: local-keycloak-instance-config
+
+---
+
+apiVersion: authenticationflow.keycloak.crossplane.io/v1alpha1
+kind: Subflow
+metadata:
+  name: test-subflow
+  namespace: crossplane-system
+spec:
+  forProvider:
+    providerId: basic-flow
+    realmIdRef:
+      name: test-realm
+    alias: test-subflow-alias
+    parentFlowAliasRef:
+      name: test-flow
+  providerConfigRef:
+    name: local-keycloak-instance-config
+
+---
+
+apiVersion: authenticationflow.keycloak.crossplane.io/v1alpha1
+kind: Flow
+metadata:
+  name: test-flow
+  namespace: crossplane-system
+spec:
+  forProvider:
+    alias: test-flow
+    providerId: basic-flow
+    realmIdRef:
+      name: test-realm
+  providerConfigRef:
+    name: local-keycloak-instance-config

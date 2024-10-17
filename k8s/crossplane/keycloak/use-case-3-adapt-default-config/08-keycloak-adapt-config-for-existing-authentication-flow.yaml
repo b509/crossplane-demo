@@ -1,0 +1,19 @@
+# ---  Only works with an external-name containing the flow's id (find it in the UI, it's generated anew for every keycloak+realm instance)
+
+apiVersion: authenticationflow.keycloak.crossplane.io/v1alpha1
+kind: Flow
+metadata:
+  name: imported-flow   
+  namespace: crossplane-system
+  annotations:
+    # https://docs.crossplane.io/latest/guides/import-existing-resources/#identify-a-specific-external-resource
+    crossplane.io/external-name: "test-realm/2a4f6fe6-405f-4dcd-9b5b-26cfdb47c33f"
+spec:
+  managementPolicies: ["Observe"]
+  forProvider:
+    realmId: test-realm
+    alias: browser # the default browser flow
+    providerId: basic-flow
+    description: browser based authentication
+  providerConfigRef:
+    name: local-keycloak-instance-config

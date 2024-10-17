@@ -1,0 +1,14 @@
+apiVersion: authenticationflow.keycloak.crossplane.io/v1alpha1
+kind: Flow
+metadata:
+  name: updated-default-flow
+  namespace: crossplane-system
+spec:
+  forProvider:
+    alias: browser 
+    import: true
+    description: updated-descr 2
+    realmIdRef:
+      name: test-realm
+  providerConfigRef:
+    name: local-keycloak-instance-config    
