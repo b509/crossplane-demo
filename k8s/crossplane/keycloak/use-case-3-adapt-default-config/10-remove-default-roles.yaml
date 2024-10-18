@@ -1,0 +1,12 @@
+apiVersion: defaults.keycloak.crossplane.io/v1alpha1
+kind: Roles
+metadata:
+  name: updated-default-role
+  namespace: crossplane-system
+spec:
+  forProvider:
+    defaultRoles: []
+    realmIdRef:
+      name: test-realm
+  providerConfigRef:
+    name: local-keycloak-instance-config    
